@@ -745,6 +745,13 @@ proc genProcHeader(m: BModule, prc: PSym): Rope =
       result.add "N_LIB_EXPORT "
   elif prc.typ.callConv == ccInline:
     result.add "static "
+  elif prc.typ.callConv == ccDefault and 
+       sfExported notin prc.flags and
+       # sfSideEffect notin prc.flags and 
+       # sfUsed in prc.flags and
+       sfCompilerProc notin prc.flags:
+    result.add "static "
+    # echo prc.name.s, " ", prc.owner.name.s
   var check = initIntSet()
   fillLoc(prc.loc, locProc, prc.typ, mangleName(prc), OnUnknown)
   genProcParams(m, prc.typ, rettype, params, check)

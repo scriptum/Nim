@@ -1483,7 +1483,7 @@ proc setupGlobalCtx(module: PSym) =
   else:
     refresh(globalCtx, module)
 
-proc myOpen(module: PSym): PPassContext =
+proc vmOpen*(module: PSym): PPassContext =
   #var c = newEvalContext(module, emRepl)
   #c.features = {allowCast, allowFFI, allowInfiniteLoops}
   #pushStackFrame(c, newStackFrame())
@@ -1496,7 +1496,7 @@ proc myOpen(module: PSym): PPassContext =
 
 var oldErrorCount: int
 
-proc myProcess(c: PPassContext, n: PNode): PNode =
+proc vmProcess*(c: PPassContext, n: PNode): PNode =
   # don't eval errornous code:
   if oldErrorCount == msgs.gErrorCounter:
     evalStmt(PCtx(c), n)
@@ -1505,7 +1505,7 @@ proc myProcess(c: PPassContext, n: PNode): PNode =
     result = n
   oldErrorCount = msgs.gErrorCounter
 
-const evalPass* = makePass(myOpen, nil, myProcess, myProcess)
+const evalPass* = makePass(vmOpen, nil, vmProcess, vmProcess)
 
 proc evalConstExprAux(module, prc: PSym, n: PNode, mode: TEvalMode): PNode =
   let n = transformExpr(module, n)

@@ -756,7 +756,7 @@ proc rawInsert[A](t: CountTable[A], data: var seq[tuple[key: A, val: int]],
   data[h].key = key
   data[h].val = val
 
-proc enlarge[A](t: var CountTable[A]) =
+proc enlarge*[A](t: var CountTable[A]) =
   var n: seq[tuple[key: A, val: int]]
   newSeq(n, len(t.data) * growthFactor)
   for i in countup(0, high(t.data)):

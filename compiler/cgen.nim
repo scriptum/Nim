@@ -1168,7 +1168,7 @@ proc newModule(module: PSym): BModule =
     if (sfDeadCodeElim in module.flags):
       internalError("added pending module twice: " & module.filename)
 
-proc myOpen(module: PSym): PPassContext =
+proc myOpen*(module: PSym): PPassContext =
   result = newModule(module)
   if optGenIndex in gGlobalOptions and generatedHeader == nil:
     let f = if headerFile.len > 0: headerFile else: gProjectFull
@@ -1203,13 +1203,13 @@ proc getCFile(m: BModule): string =
       else: ".c"
   result = changeFileExt(completeCFilePath(m.cfilename.withPackageName), ext)
 
-proc myOpenCached(module: PSym, rd: PRodReader): PPassContext =
+proc myOpenCached*(module: PSym, rd: PRodReader): PPassContext =
   assert optSymbolFiles in gGlobalOptions
   var m = newModule(module)
   readMergeInfo(getCFile(m), m)
   result = m
 
-proc myProcess(b: PPassContext, n: PNode): PNode =
+proc myProcess*(b: PPassContext, n: PNode): PNode =
   result = n
   if b == nil or passes.skipCodegen(n): return
   var m = BModule(b)
@@ -1295,7 +1295,7 @@ proc updateCachedModule(m: BModule) =
 
   addFileToLink(cfilenoext)
 
-proc myClose(b: PPassContext, n: PNode): PNode =
+proc myClose*(b: PPassContext, n: PNode): PNode =
   result = n
   if b == nil or passes.skipCodegen(n): return
   var m = BModule(b)

@@ -19,7 +19,7 @@ type
     module: PSym
   PGen = ref TGen
 
-proc close(p: PPassContext, n: PNode): PNode =
+proc close*(p: PPassContext, n: PNode): PNode =
   var g = PGen(p)
   let useWarning = sfMainModule notin g.module.flags
   if gWholeProject or sfMainModule in g.module.flags:
@@ -29,12 +29,12 @@ proc close(p: PPassContext, n: PNode): PNode =
     except IOError:
       discard
 
-proc processNode(c: PPassContext, n: PNode): PNode =
+proc processNode*(c: PPassContext, n: PNode): PNode =
   result = n
   var g = PGen(c)
   generateDoc(g.doc, n)
 
-proc myOpen(module: PSym): PPassContext =
+proc myOpen*(module: PSym): PPassContext =
   var g: PGen
   new(g)
   g.module = module

@@ -1774,7 +1774,7 @@ proc genModule(p: PProc, n: PNode) =
   if optStackTrace in p.options:
     addf(p.body, "framePtr = framePtr.prev;$n", [])
 
-proc myProcess(b: PPassContext, n: PNode): PNode =
+proc myProcess*(b: PPassContext, n: PNode): PNode =
   if passes.skipCodegen(n): return n
   result = n
   var m = BModule(b)
@@ -1799,7 +1799,7 @@ proc wholeCode*(m: BModule): Rope =
 
   result = globals.typeInfo & globals.code
 
-proc myClose(b: PPassContext, n: PNode): PNode =
+proc myClose*(b: PPassContext, n: PNode): PNode =
   if passes.skipCodegen(n): return n
   result = myProcess(b, n)
   var m = BModule(b)
@@ -1813,11 +1813,11 @@ proc myClose(b: PPassContext, n: PNode): PNode =
        changeFileExt(completeCFilePath(m.module.filename), "js")
     discard writeRopeIfNotEqual(genHeader() & code, outfile)
 
-proc myOpenCached(s: PSym, rd: PRodReader): PPassContext =
+proc myOpenCached*(s: PSym, rd: PRodReader): PPassContext =
   internalError("symbol files are not possible with the JS code generator")
   result = nil
 
-proc myOpen(s: PSym): PPassContext =
+proc myOpen*(s: PSym): PPassContext =
   result = newModule(s)
 
 const JSgenPass* = makePass(myOpen, myOpenCached, myProcess, myClose)

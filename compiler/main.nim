@@ -26,7 +26,7 @@ proc rodPass =
 proc codegenPass =
   registerPass cgenPass
 
-proc semanticPasses =
+proc semanticPasses* =
   registerPass verbosePass
   registerPass semPass
 

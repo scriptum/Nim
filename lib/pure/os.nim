@@ -642,7 +642,7 @@ when defined(windows):
     proc strEnd(cstr: cstring, c = 0'i32): cstring {.
       importc: "strchr", header: "<string.h>".}
 
-  proc getEnvVarsC() =
+  proc getEnvVarsC*() =
     if not envComputed:
       environment = @[]
       when useWinUnicode:
@@ -687,7 +687,7 @@ else:
   else:
     var gEnv {.importc: "environ".}: cstringArray
 
-  proc getEnvVarsC() =
+  proc getEnvVarsC*() =
     # retrieves the variables of char** env of C's main proc
     if not envComputed:
       environment = @[]

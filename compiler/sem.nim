@@ -395,7 +395,7 @@ proc addCodeForGenerics(c: PContext, n: PNode) =
         addSon(n, prc.ast)
   c.lastGenericIdx = c.generics.len
 
-proc myOpen(module: PSym): PPassContext =
+proc myOpen*(module: PSym): PPassContext =
   var c = newContext(module)
   if c.p != nil: internalError(module.info, "sem.myOpen")
   c.semConstExpr = semConstExpr
@@ -422,7 +422,7 @@ proc myOpen(module: PSym): PPassContext =
   c.topLevelScope = openScope(c)
   result = c
 
-proc myOpenCached(module: PSym, rd: PRodReader): PPassContext =
+proc myOpenCached*(module: PSym, rd: PRodReader): PPassContext =
   result = myOpen(module)
   for m in items(rd.methods): methodDef(m, true)
 
@@ -455,7 +455,7 @@ proc recoverContext(c: PContext) =
   while getCurrOwner().kind != skModule: popOwner()
   while c.p != nil and c.p.owner.kind != skModule: c.p = c.p.next
 
-proc myProcess(context: PPassContext, n: PNode): PNode =
+proc myProcess*(context: PPassContext, n: PNode): PNode =
   var c = PContext(context)
   # no need for an expensive 'try' if we stop after the first error anyway:
   if msgs.gErrorMax <= 1:
@@ -473,7 +473,7 @@ proc myProcess(context: PPassContext, n: PNode): PNode =
       else: result = ast.emptyNode
       #if gCmd == cmdIdeTools: findSuggest(c, n)
 
-proc myClose(context: PPassContext, n: PNode): PNode =
+proc myClose*(context: PPassContext, n: PNode): PNode =
   var c = PContext(context)
   closeScope(c)         # close module's scope
   rawCloseScope(c)      # imported symbols; don't check for unused ones!

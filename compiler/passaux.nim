@@ -12,12 +12,12 @@
 import
   strutils, ast, astalgo, passes, msgs, options, idgen
 
-proc verboseOpen(s: PSym): PPassContext =
+proc verboseOpen*(s: PSym): PPassContext =
   #MessageOut('compiling ' + s.name.s);
   result = nil                # we don't need a context
   rawMessage(hintProcessing, s.name.s)
 
-proc verboseProcess(context: PPassContext, n: PNode): PNode =
+proc verboseProcess*(context: PPassContext, n: PNode): PNode =
   result = n
   if context != nil: internalError("logpass: context is not nil")
   if gVerbosity == 3:
@@ -28,7 +28,7 @@ proc verboseProcess(context: PPassContext, n: PNode): PNode =
 
 const verbosePass* = makePass(open = verboseOpen, process = verboseProcess)
 
-proc cleanUp(c: PPassContext, n: PNode): PNode =
+proc cleanUp*(c: PPassContext, n: PNode): PNode =
   result = n
   # we cannot clean up if dead code elimination is activated
   if optDeadCodeElim in gGlobalOptions or n == nil: return

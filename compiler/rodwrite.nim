@@ -521,7 +521,7 @@ proc writeRod(w: PRodWriter) =
   #echo "init:   ", w.init.len
   #echo "data:   ", w.data.len
 
-proc process(c: PPassContext, n: PNode): PNode =
+proc process*(c: PPassContext, n: PNode): PNode =
   result = n
   if c == nil: return
   var w = PRodWriter(c)
@@ -574,13 +574,13 @@ proc process(c: PPassContext, n: PNode): PNode =
   else:
     discard
 
-proc myOpen(module: PSym): PPassContext =
+proc myOpen*(module: PSym): PPassContext =
   if module.id < 0: internalError("rodwrite: module ID not set")
   var w = newRodWriter(module.fileIdx.getHash, module)
   rawAddInterfaceSym(w, module)
   result = w
 
-proc myClose(c: PPassContext, n: PNode): PNode =
+proc myClose*(c: PPassContext, n: PNode): PNode =
   result = process(c, n)
   var w = PRodWriter(c)
   writeRod(w)

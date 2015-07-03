@@ -376,7 +376,7 @@ proc cmp(a, b: IndexEntry): int =
   if result == 0:
     result = cmpIgnoreStyle(a.link, b.link)
 
-proc hash(x: IndexEntry): Hash =
+proc hash*(x: IndexEntry): Hash =
   ## Returns the hash for the combined fields of the type.
   ##
   ## The hash is computed as the chained hash of the individual string hashes.
@@ -387,7 +387,7 @@ proc hash(x: IndexEntry): Hash =
   result = result !& (x.linkDesc or "").hash
   result = !$result
 
-proc `<-`(a: var IndexEntry, b: IndexEntry) =
+proc `<-`*(a: var IndexEntry, b: IndexEntry) =
   shallowCopy a.keyword, b.keyword
   shallowCopy a.link, b.link
   if b.linkTitle.isNil: a.linkTitle = nil
